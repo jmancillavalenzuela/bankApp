@@ -19,7 +19,7 @@ export class NewRecipientComponent implements OnInit {
   bankList: BankResponse[] = [];
   accountTypeList: string[] = [];
   isLoading = false;
-  
+
   submitForm(): void {
     for (const formInput in this.newRecipientForm.controls) {
       if (this.newRecipientForm.controls.hasOwnProperty(formInput)) {
@@ -77,7 +77,6 @@ export class NewRecipientComponent implements OnInit {
   public async saveForm(): Promise<void> {
     if (this.newRecipientForm.status === 'VALID') {
       const makeReceiverAccount = this.newRecipientForm.value;
-      console.log(makeReceiverAccount); // CAMBIAR A ACCOUNTDTO
       var cleanRUT = makeReceiverAccount.rut.replace('/-/.', '');
 
       let registerRecipient = {
@@ -108,7 +107,6 @@ export class NewRecipientComponent implements OnInit {
   }
 
   public formatRut(): void {
-    console.log();
     let rut = this.newRecipientForm.get('rut')?.value;
     rut = rut.replace('.', '').replace('-', '');
     const module = rut.substr(rut.length - 1);

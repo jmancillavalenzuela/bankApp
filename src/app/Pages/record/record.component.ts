@@ -32,10 +32,6 @@ export class RecordComponent implements OnInit {
     } catch {
       this.messageService.add('Error in Bank Service');
     }
-
-    console.log(this.bankList);
-    console.log(this.bankName('0000001'));
-
     //Init dataSet Table
     try {
       this.recordList = await this.transactionService
@@ -47,7 +43,6 @@ export class RecordComponent implements OnInit {
   }
 
   public formatRut(inRut: string): string {
-    console.log(inRut);
     let rut = inRut;
     rut = rut.replace('.', '').replace('-', '');
     const module = rut.substr(rut.length - 1);

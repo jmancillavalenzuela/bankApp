@@ -116,7 +116,6 @@ export class TransactionComponent implements OnInit {
   formatterCLP = (value: number) => (value > 0 ? `$ ${value}` : ' ');
 
   formatRut(inRut: string): string {
-    console.log(inRut);
     let rut = inRut;
     rut = rut.replace('.', '').replace('-', '');
     const module = rut.substr(rut.length - 1);

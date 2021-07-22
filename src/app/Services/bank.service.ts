@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -38,7 +42,7 @@ export class BankService {
     window.alert(errorMessage);
     return throwError(errorMessage);
   }
-  
+
   /**
    * Handle log Message.
    * @param message - message to display in log (messageService)
@@ -46,5 +50,4 @@ export class BankService {
   private log(message: string) {
     this.messageService.add(`Bank Service: ${message}`);
   }
-
 }

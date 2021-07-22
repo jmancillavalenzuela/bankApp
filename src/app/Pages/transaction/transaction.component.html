@@ -1,0 +1,42 @@
+<form nz-form [formGroup]="transactionForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="searchDestination" nzRequired
+      >Buscar Destinatario</nz-form-label
+    >
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      nzErrorTip="El Destinatario No es Válido"
+    >
+      <nz-select
+        nzShowSearch
+        nzServerSearch
+        nzPlaceHolder="input search text"
+        [nzShowArrow]="false"
+        [nzFilterOption]="nzFilterOption"
+        (nzOnSearch)="search($event)"
+      >
+        <nz-option
+          *ngFor="let destinationRut of destinationRutList"
+          [nzLabel]="destinationRut.rut"
+          [nzValue]="destinationRut.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="amount"
+      >Monto</nz-form-label
+    >
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="El Monto No es Válido">
+      <input nz-input formControlName="amount" id="amount" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary">Transferir</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

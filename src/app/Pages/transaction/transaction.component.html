@@ -11,7 +11,7 @@
       <nz-select
         nzShowSearch
         nzServerSearch
-        nzPlaceHolder="input search text"
+        nzPlaceHolder="Ingresar Cuenta"
         formControlName="destination"
         [nzShowArrow]="false"
         [nzFilterOption]="nzFilterOption"
@@ -32,18 +32,26 @@
     *ngIf="showInfo"
     class="maxContent"
   >
-    <nz-descriptions-item nzTitle="Nombre">{{ fullName }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Rut">{{ rut }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Mail">{{ mail }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Teléfono">{{
-      phoneNumber
+    <nz-descriptions-item nzTitle="Nombre">{{
+      infoAccount.name
     }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Banco">{{ bank }} </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Rut">{{
+      formatRut(infoAccount.rut)
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Mail">{{
+      infoAccount.mail
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Teléfono">{{
+      infoAccount.phoneNumber
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Banco"
+      >{{ infoAccount.bank }}
+    </nz-descriptions-item>
     <nz-descriptions-item nzTitle="Número de Cuenta"
-      >{{ accountNumber }}
+      >{{ infoAccount.accountNumber }}
     </nz-descriptions-item>
     <nz-descriptions-item nzTitle="Tipo de Cuenta"
-      >{{ accountType }}
+      >{{ infoAccount.accountType }}
     </nz-descriptions-item>
   </nz-descriptions>
 

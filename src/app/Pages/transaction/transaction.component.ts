@@ -8,6 +8,7 @@ import { TransactionService } from '../../Services/transaction.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AccountDTO } from 'src/app/Services/DTO/account.dto';
 import { TransactionDTO } from 'src/app/Services/DTO/transaction.dto';
+import { formatRut } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-transaction',
@@ -20,14 +21,8 @@ export class TransactionComponent implements OnInit {
   nzFilterOption = () => true;
   isLoading = false;
   /// Account Info
+  infoAccount!: AccountDTO;
   showInfo: boolean = false;
-  fullName: string = '';
-  rut: string = '';
-  mail: string = '';
-  phoneNumber: string = '';
-  bank: string = '';
-  accountNumber: string = '';
-  accountType: string = '';
 
   submitForm(): void {
     for (const formInput in this.transactionForm.controls) {
@@ -70,11 +65,9 @@ export class TransactionComponent implements OnInit {
     if (this.transactionForm.status === 'VALID') {
       const makeTransaction = this.transactionForm.value;
       let registerTransaction = {
-        destinationID: makeTransaction.destination,
+        destinationID: this.infoAccount,
         amount: makeTransaction.amount,
       } as TransactionDTO;
-      console.log(registerTransaction);
-
       //SAVE FORM
       try {
         let response = await this.transactionService
@@ -114,17 +107,22 @@ export class TransactionComponent implements OnInit {
       .toPromise();
     if (accountSelected) {
       this.showInfo = true;
-      this.fullName = accountSelected.name;
-      this.rut = accountSelected.rut;
-      this.mail = accountSelected.mail;
-      this.phoneNumber = accountSelected.phoneNumber;
-      this.bank = accountSelected.bank;
-      this.accountNumber = accountSelected.accountNumber;
-      this.accountType = accountSelected.accountType;
+      this.infoAccount = accountSelected;
     } else {
       this.showInfo = false;
     }
   }
-
+  //Desacoplar en Utils
   formatterCLP = (value: number) => (value > 0 ? `$ ${value}` : ' ');
+
+  formatRut(inRut: string): string {
+    console.log(inRut);
+    let rut = inRut;
+    rut = rut.replace('.', '').replace('-', '');
+    const module = rut.substr(rut.length - 1);
+    rut = rut.slice(0, -1);
+    rut = rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    rut = rut + `-${module}`;
+    return rut;
+  }
 }

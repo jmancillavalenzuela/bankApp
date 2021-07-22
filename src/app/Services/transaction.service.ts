@@ -24,7 +24,7 @@ export class TransactionService {
   /**
    * Get Transaction list from HTTP [GET] request.
    */
-  getAccounts(): Observable<TransactionDTO[]> {
+  getTransactions(): Observable<TransactionDTO[]> {
     return this.http.get<TransactionDTO[]>(this.TRANSACTION_API).pipe(
       tap((_) => this.log('fetched Transactions')),
       catchError(this.handleError)
@@ -34,7 +34,7 @@ export class TransactionService {
   /**
    * Get Transaction list from HTTP [GET] request.
    */
-  getAccountByID(id: string): Observable<TransactionDTO> {
+  getTransactionByID(id: string): Observable<TransactionDTO> {
     return this.http.get<TransactionDTO>(`${this.TRANSACTION_API}/${id}`).pipe(
       tap((_) => this.log('fetched Transaction List')),
       catchError(this.handleError)

@@ -1,8 +1,8 @@
-import { AccountDTO } from './accountSearch';
+import { AccountDTO } from './account.dto';
 
 export interface TransactionDTO {
   _id?: string;
   originID?: AccountDTO;
   destinationID: AccountDTO;
-  amount: string;
+  amount: number;
 }

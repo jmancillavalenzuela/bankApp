@@ -1,0 +1,22 @@
+<nz-table #basicTable [nzData]="recordList">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Rut</th>
+      <th>Banco</th>
+      <th>Tipo de Cuenta</th>
+      <th>Numero de Cuenta</th>
+      <th>Monto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.destinationID.name }}</td>
+      <td>{{ formatRut(data.destinationID.rut) }}</td>
+      <td>{{ bankName(data.destinationID.bank) }}</td>
+      <td>{{ data.destinationID.accountType }}</td>
+      <td>{{ data.destinationID.accountNumber }}</td>
+      <td>{{ formatterCLP(data.amount) }}</td>
+    </tr>
+  </tbody>
+</nz-table>

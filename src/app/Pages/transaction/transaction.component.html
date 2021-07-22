@@ -1,0 +1,80 @@
+<form nz-form [formGroup]="transactionForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="searchDestination" nzRequired
+      >Buscar Destinatario</nz-form-label
+    >
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      nzErrorTip="El Destinatario No es Válido"
+    >
+      <nz-select
+        nzShowSearch
+        nzServerSearch
+        nzPlaceHolder="Ingresar Cuenta"
+        formControlName="destination"
+        [nzShowArrow]="false"
+        [nzFilterOption]="nzFilterOption"
+        (nzOnSearch)="search($event)"
+        (ngModelChange)="info($event)"
+      >
+        <nz-option
+          *ngFor="let account of accountList"
+          [nzLabel]="account.rut"
+          [nzValue]="account._id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-descriptions
+    nzTitle="Información de Cuenta"
+    [nzBordered]="true"
+    *ngIf="showInfo"
+    class="maxContent"
+  >
+    <nz-descriptions-item nzTitle="Nombre">{{
+      infoAccount.name
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Rut">{{
+      formatRut(infoAccount.rut)
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Mail">{{
+      infoAccount.mail
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Teléfono">{{
+      infoAccount.phoneNumber
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Banco"
+      >{{ infoAccount.bank }}
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Número de Cuenta"
+      >{{ infoAccount.accountNumber }}
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Tipo de Cuenta"
+      >{{ infoAccount.accountType }}
+    </nz-descriptions-item>
+  </nz-descriptions>
+
+  <nz-form-item class="paddingTop">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="amount"
+      >Monto</nz-form-label
+    >
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="El Monto No es Válido">
+      <nz-input-number
+        [nzFormatter]="formatterCLP"
+        [nzMin]="1"
+        [nzStep]="1"
+        id="amount"
+        formControlName="amount"
+      ></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary" [disabled]="accountList.length < 1">
+        Transferir
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

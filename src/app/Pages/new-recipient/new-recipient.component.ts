@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BankResponse } from '../../Services/DTO/bank.dto';
 import { BankService } from '../../Services/bank.service';
 import { MessageService } from '../../Services/message.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-new-recipient',
@@ -17,20 +18,20 @@ export class NewRecipientComponent implements OnInit {
   isLoading = false;
 
   submitForm(): void {
-    for (const i in this.newRecipientForm.controls) {
-      if (this.newRecipientForm.controls.hasOwnProperty(i)) {
-        this.newRecipientForm.controls[i].markAsDirty();
-        this.newRecipientForm.controls[i].updateValueAndValidity();
+    for (const formInput in this.newRecipientForm.controls) {
+      if (this.newRecipientForm.controls.hasOwnProperty(formInput)) {
+        this.newRecipientForm.controls[formInput].markAsDirty();
+        this.newRecipientForm.controls[formInput].updateValueAndValidity();
       }
     }
-    const makeReceiverAccount = this.newRecipientForm.value;
-    console.log(makeReceiverAccount);
+    this.saveForm();
   }
 
   constructor(
     private fb: FormBuilder,
     private bankService: BankService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private message: NzMessageService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -69,13 +70,24 @@ export class NewRecipientComponent implements OnInit {
     }
   }
 
-  /*   public formatRut(): void {
-    let rut = this.formNuevoDestinatario.get('rut_dest')!.value.toString();
+  public saveForm(): void {
+    if (this.newRecipientForm.status === 'VALID') {
+      const makeReceiverAccount = this.newRecipientForm.value;
+      console.log(makeReceiverAccount);
+      //SAVE FORM
+      this.message.success(`Nuevo Destinatario Creado Exitosamente`);
+      this.message.error('Hubo un problema en Registrar su Nuevo Destinatario');
+    }
+  }
+
+  public formatRut(): void {
+    console.log();
+    let rut = this.newRecipientForm.get('rut')?.value;
     rut = rut.replace('.', '').replace('-', '');
     const module = rut.substr(rut.length - 1);
     rut = rut.slice(0, -1);
     rut = rut.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     rut = rut + `-${module}`;
-    this.formNuevoDestinatario.get('rut_dest')!.setValue(rut);
-  } */
+    this.newRecipientForm.get('rut')?.setValue(rut);
+  }
 }

@@ -6,7 +6,7 @@
     <nz-form-control
       [nzSm]="14"
       [nzXs]="24"
-      nzErrorTip="Please input your fullName!"
+      nzErrorTip="El Nombre No es Válido"
     >
       <input nz-input id="fullName" formControlName="fullName" />
     </nz-form-control>
@@ -16,12 +16,8 @@
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="rut" nzRequired
       >Rut</nz-form-label
     >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="Please input your rut!"
-    >
-      <input nz-input id="rut" formControlName="rut" />
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="EL RUT No es Válido">
+      <input nz-input id="rut" formControlName="rut" (blur)="formatRut()" />
     </nz-form-control>
   </nz-form-item>
 
@@ -32,7 +28,7 @@
     <nz-form-control
       [nzSm]="14"
       [nzXs]="24"
-      nzErrorTip="The input is not valid E-mail!"
+      nzErrorTip="El E-Mail No es Válido"
     >
       <input nz-input formControlName="email" id="email" />
     </nz-form-control>
@@ -45,7 +41,7 @@
     <nz-form-control
       [nzSm]="14"
       [nzXs]="24"
-      nzErrorTip="Please input your phone number!"
+      nzErrorTip="El Teléfono No es Válido"
     >
       <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
         <ng-template #addOnBeforeTemplate>
@@ -62,11 +58,7 @@
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="destinationBank"
       >Banco de Destino</nz-form-label
     >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="The input is not valid destinationBank!"
-    >
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="El Banco de Destino No es Válido">
       <nz-select
         formControlName="destinationBank"
         nzAllowClear
@@ -88,7 +80,7 @@
     <nz-form-control
       [nzSm]="14"
       [nzXs]="24"
-      nzErrorTip="The input is not valid accountType!"
+      nzErrorTip="El Tipo de Cuenta No es Válido"
     >
       <nz-select
         formControlName="accountType"
@@ -111,7 +103,7 @@
     <nz-form-control
       [nzSm]="14"
       [nzXs]="24"
-      nzErrorTip="The input is not valid accountNumber!"
+      nzErrorTip="El Número de Cuenta No es Válido"
     >
       <input nz-input formControlName="accountNumber" id="accountNumber" />
     </nz-form-control>

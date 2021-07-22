@@ -7,6 +7,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
     NzSelectModule,
     NzGridModule,
     NzButtonModule,
+    NzMessageModule,
     FormsModule,
     ReactiveFormsModule,
   ],

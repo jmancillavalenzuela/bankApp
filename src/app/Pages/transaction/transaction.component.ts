@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { BankService } from '../../Services/bank.service';
+import { AccountService } from '../../Services/account.service';
 import { MessageService } from '../../Services/message.service';
+import { TransactionService } from '../../Services/transaction.service';
+
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { HttpClient } from '@angular/common/http'; //ELIMINAR POR SERVICIO
+import { AccountDTO } from 'src/app/Services/DTO/account.dto';
+import { TransactionDTO } from 'src/app/Services/DTO/transaction.dto';
 
 @Component({
   selector: 'app-transaction',
@@ -13,9 +16,18 @@ import { HttpClient } from '@angular/common/http'; //ELIMINAR POR SERVICIO
 })
 export class TransactionComponent implements OnInit {
   transactionForm!: FormGroup;
-  destinationRutList: any[] = []; //TIPAR
+  accountList: AccountDTO[] = [];
   nzFilterOption = () => true;
   isLoading = false;
+  /// Account Info
+  showInfo: boolean = false;
+  fullName: string = '';
+  rut: string = '';
+  mail: string = '';
+  phoneNumber: string = '';
+  bank: string = '';
+  accountNumber: string = '';
+  accountType: string = '';
 
   submitForm(): void {
     for (const formInput in this.transactionForm.controls) {
@@ -29,52 +41,90 @@ export class TransactionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private bankService: BankService,
+    private accountService: AccountService,
     private messageService: MessageService,
-    private message: NzMessageService,
-    private httpClient: HttpClient //ELIMINAR por SERVICIO
+    private transactionService: TransactionService,
+    private message: NzMessageService
   ) {}
 
   async ngOnInit(): Promise<void> {
     //Init Form
     this.transactionForm = this.fb.group({
-      fullName: [null, [Validators.required]],
-      rut: [null, [Validators.required]],
-      amount: [null, [Validators.email, Validators.required]],
+      destination: [null, [Validators.required]],
+      amount: [null, Validators.required],
     });
     //Init Destination Rut Select Search
     try {
-      this.destinationRutList = ['18793047-2'];
+      this.accountList = await this.accountService.getAccounts().toPromise();
     } catch {
       this.messageService.add('Error in Bank Service');
     }
-  }
-
-  public saveForm(): void {
-    if (this.transactionForm.status === 'VALID') {
-      const makeReceiverAccount = this.transactionForm.value;
-      console.log(makeReceiverAccount);
-      //SAVE FORM
-      this.message.success(`Transacción Realizada Exitosamente`);
-      this.message.error('Hubo un problema en Realizar su Transacción');
+    if (this.accountList.length < 0) {
+      this.message.info('No hay Cuentas Registradas', {
+        nzDuration: 5000,
+      });
     }
   }
 
-  search(value: string): void {
-    this.httpClient
-      .jsonp<{ result: Array<[string, string]> }>(
-        `https://suggest.taobao.com/sug?code=utf-8&q=${value}`,
-        'callback'
-      )
-      .subscribe((data) => {
-        const listOfOption: Array<{ value: string; text: string }> = [];
-        data.result.forEach((item) => {
-          listOfOption.push({
-            value: item[0],
-            text: item[0],
-          });
-        });
-        this.destinationRutList = listOfOption;
-      });
+  public async saveForm(): Promise<void> {
+    if (this.transactionForm.status === 'VALID') {
+      const makeTransaction = this.transactionForm.value;
+      let registerTransaction = {
+        destinationID: makeTransaction.destination,
+        amount: makeTransaction.amount,
+      } as TransactionDTO;
+      console.log(registerTransaction);
+
+      //SAVE FORM
+      try {
+        let response = await this.transactionService
+          .createTransaction(registerTransaction)
+          .toPromise();
+        if (response._id) {
+          this.message.success(`Transacción Realizada Exitosamente`);
+        } else {
+          this.message.error('Hubo un problema en Realizar su Transacción');
+        }
+      } catch {
+        this.messageService.add('Error in Transaction Service');
+      }
+    }
   }
+
+  async search(value: string): Promise<void> {
+    if (value === '') {
+      try {
+        this.accountList = await this.accountService.getAccounts().toPromise();
+      } catch {
+        this.message.error('Hubo un problema en Realizar su Transacción');
+        this.messageService.add('Error in Account Service');
+      }
+    }
+    const search = this.accountList.filter((account) =>
+      account.rut.startsWith(value)
+    );
+    this.accountList = search;
+    // Init account info
+    this.transactionForm.get('destination')!.value;
+  }
+
+  async info(id: any) {
+    const accountSelected = await this.accountService
+      .getAccountByID(id)
+      .toPromise();
+    if (accountSelected) {
+      this.showInfo = true;
+      this.fullName = accountSelected.name;
+      this.rut = accountSelected.rut;
+      this.mail = accountSelected.mail;
+      this.phoneNumber = accountSelected.phoneNumber;
+      this.bank = accountSelected.bank;
+      this.accountNumber = accountSelected.accountNumber;
+      this.accountType = accountSelected.accountType;
+    } else {
+      this.showInfo = false;
+    }
+  }
+
+  formatterCLP = (value: number) => (value > 0 ? `$ ${value}` : ' ');
 }

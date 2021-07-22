@@ -12,31 +12,61 @@
         nzShowSearch
         nzServerSearch
         nzPlaceHolder="input search text"
+        formControlName="destination"
         [nzShowArrow]="false"
         [nzFilterOption]="nzFilterOption"
         (nzOnSearch)="search($event)"
+        (ngModelChange)="info($event)"
       >
         <nz-option
-          *ngFor="let destinationRut of destinationRutList"
-          [nzLabel]="destinationRut.rut"
-          [nzValue]="destinationRut.id"
+          *ngFor="let account of accountList"
+          [nzLabel]="account.rut"
+          [nzValue]="account._id"
         ></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>
+  <nz-descriptions
+    nzTitle="Información de Cuenta"
+    [nzBordered]="true"
+    *ngIf="showInfo"
+    class="maxContent"
+  >
+    <nz-descriptions-item nzTitle="Nombre">{{ fullName }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Rut">{{ rut }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Mail">{{ mail }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Teléfono">{{
+      phoneNumber
+    }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Banco">{{ bank }} </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Número de Cuenta"
+      >{{ accountNumber }}
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Tipo de Cuenta"
+      >{{ accountType }}
+    </nz-descriptions-item>
+  </nz-descriptions>
 
-  <nz-form-item>
+  <nz-form-item class="paddingTop">
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="amount"
       >Monto</nz-form-label
     >
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="El Monto No es Válido">
-      <input nz-input formControlName="amount" id="amount" />
+      <nz-input-number
+        [nzFormatter]="formatterCLP"
+        [nzMin]="1"
+        [nzStep]="1"
+        id="amount"
+        formControlName="amount"
+      ></nz-input-number>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item nz-row class="register-area">
     <nz-form-control [nzSpan]="14" [nzOffset]="6">
-      <button nz-button nzType="primary">Transferir</button>
+      <button nz-button nzType="primary" [disabled]="accountList.length < 1">
+        Transferir
+      </button>
     </nz-form-control>
   </nz-form-item>
 </form>

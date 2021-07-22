@@ -8,6 +8,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -16,10 +19,12 @@ import { CommonModule } from '@angular/common';
     TransactionRoutingModule,
     NzFormModule,
     NzInputModule,
+    NzInputNumberModule,
     NzSelectModule,
     NzGridModule,
     NzButtonModule,
     NzMessageModule,
+    NzDescriptionsModule,
     FormsModule,
     ReactiveFormsModule,
   ],

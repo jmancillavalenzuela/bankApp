@@ -1,117 +1,22 @@
-<form nz-form [formGroup]="newRecipientForm" (ngSubmit)="submitForm()">
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fullName" nzRequired
-      >Nombre</nz-form-label
-    >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="El Nombre No es Válido"
-    >
-      <input nz-input id="fullName" formControlName="fullName" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="rut" nzRequired
-      >Rut</nz-form-label
-    >
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="EL RUT No es Válido">
-      <input nz-input id="rut" formControlName="rut" (blur)="formatRut()" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email"
-      >Correo</nz-form-label
-    >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="El E-Mail No es Válido"
-    >
-      <input nz-input formControlName="email" id="email" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired
-      >Número de Teléfono</nz-form-label
-    >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="El Teléfono No es Válido"
-    >
-      <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
-        <ng-template #addOnBeforeTemplate>
-          <nz-select formControlName="phoneNumberPrefix" class="phone-select">
-            <nz-option nzLabel="+56" nzValue="+56"></nz-option>
-          </nz-select>
-        </ng-template>
-        <input formControlName="phoneNumber" id="phoneNumber" nz-input />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="destinationBank"
-      >Banco de Destino</nz-form-label
-    >
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="El Banco de Destino No es Válido">
-      <nz-select
-        formControlName="destinationBank"
-        nzAllowClear
-        nzPlaceHolder="Seleccionar Banco"
-      >
-        <nz-option
-          *ngFor="let bank of bankList"
-          [nzValue]="bank.id"
-          [nzLabel]="bank.name"
-        ></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="accountType"
-      >Tipo de Cuenta</nz-form-label
-    >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="El Tipo de Cuenta No es Válido"
-    >
-      <nz-select
-        formControlName="accountType"
-        nzAllowClear
-        nzPlaceHolder="Seleccionar Tipo de Cuenta"
-      >
-        <nz-option
-          *ngFor="let accountType of accountTypeList"
-          [nzValue]="accountType"
-          [nzLabel]="accountType"
-        ></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="accountNumber"
-      >Número de Cuenta</nz-form-label
-    >
-    <nz-form-control
-      [nzSm]="14"
-      [nzXs]="24"
-      nzErrorTip="El Número de Cuenta No es Válido"
-    >
-      <input nz-input formControlName="accountNumber" id="accountNumber" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item nz-row class="register-area">
-    <nz-form-control [nzSpan]="14" [nzOffset]="6">
-      <button nz-button nzType="primary">Registrar</button>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+<nz-table #basicTable [nzData]="recordList">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Rut</th>
+      <th>Banco</th>
+      <th>Tipo de Cuenta</th>
+      <th>Numero de Cuenta</th>
+      <th>Monto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.destinationID.name }}</td>
+      <td>{{ formatRut(data.destinationID.rut) }}</td>
+      <td>{{ bankName(data.destinationID.bank) }}</td>
+      <td>{{ data.destinationID.accountType }}</td>
+      <td>{{ data.destinationID.accountNumber }}</td>
+      <td>{{ formatterCLP(data.amount) }}</td>
+    </tr>
+  </tbody>
+</nz-table>

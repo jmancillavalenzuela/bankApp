@@ -8,12 +8,17 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
 import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
     CommonModule,
     RecordRoutingModule,
+    NzDividerModule,
+    NzTableModule,
     NzFormModule,
     NzInputModule,
     NzSelectModule,

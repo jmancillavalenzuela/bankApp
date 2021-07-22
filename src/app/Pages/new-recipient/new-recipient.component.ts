@@ -3,8 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { BankResponse } from '../../Services/DTO/bank.dto';
 import { BankService } from '../../Services/bank.service';
+import { AccountService } from '../../Services/account.service';
+
 import { MessageService } from '../../Services/message.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { AccountDTO } from 'src/app/Services/DTO/account.dto';
 
 @Component({
   selector: 'app-new-recipient',
@@ -16,7 +19,7 @@ export class NewRecipientComponent implements OnInit {
   bankList: BankResponse[] = [];
   accountTypeList: string[] = [];
   isLoading = false;
-
+  
   submitForm(): void {
     for (const formInput in this.newRecipientForm.controls) {
       if (this.newRecipientForm.controls.hasOwnProperty(formInput)) {
@@ -30,6 +33,7 @@ export class NewRecipientComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private bankService: BankService,
+    private accountService: AccountService,
     private messageService: MessageService,
     private message: NzMessageService
   ) {}
@@ -70,13 +74,36 @@ export class NewRecipientComponent implements OnInit {
     }
   }
 
-  public saveForm(): void {
+  public async saveForm(): Promise<void> {
     if (this.newRecipientForm.status === 'VALID') {
       const makeReceiverAccount = this.newRecipientForm.value;
-      console.log(makeReceiverAccount);
+      console.log(makeReceiverAccount); // CAMBIAR A ACCOUNTDTO
+      var cleanRUT = makeReceiverAccount.rut.replace('/-/.', '');
+
+      let registerRecipient = {
+        name: makeReceiverAccount.fullName,
+        rut: cleanRUT,
+        mail: makeReceiverAccount.email,
+        phoneNumber: makeReceiverAccount.phoneNumber,
+        bank: makeReceiverAccount.destinationBank,
+        accountNumber: makeReceiverAccount.accountNumber,
+        accountType: makeReceiverAccount.accountType,
+      } as AccountDTO;
       //SAVE FORM
-      this.message.success(`Nuevo Destinatario Creado Exitosamente`);
-      this.message.error('Hubo un problema en Registrar su Nuevo Destinatario');
+      try {
+        let response = await this.accountService
+          .createAccount(registerRecipient)
+          .toPromise();
+        if (response._id) {
+          this.message.success(`Nuevo Destinatario Creado Exitosamente`);
+        } else {
+          this.message.error(
+            'Hubo un problema en Registrar su Nuevo Destinatario'
+          );
+        }
+      } catch {
+        this.messageService.add('Error in Account Service');
+      }
     }
   }
 

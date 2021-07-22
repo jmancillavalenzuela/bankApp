@@ -2,12 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/welcome' },
-  {
-    path: 'welcome',
-    loadChildren: () =>
-      import('./Pages/welcome/welcome.module').then((m) => m.WelcomeModule),
-  },
+  { path: '', pathMatch: 'full', redirectTo: '/record' },
   {
     path: 'new-recipient',
     loadChildren: () =>
@@ -20,6 +15,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./Pages/transaction/transaction.module').then(
         (m) => m.TransactionModule
+      ),
+  },
+  {
+    path: 'record',
+    loadChildren: () =>
+      import('./Pages/record/record.module').then(
+        (m) => m.RecordModule
       ),
   },
 ];

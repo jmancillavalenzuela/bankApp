@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { AccountDTO } from './DTO/account.dto';
 import { MessageService } from './message.service';
 
@@ -13,7 +14,7 @@ import { MessageService } from './message.service';
   providedIn: 'root',
 })
 export class AccountService {
-  private ACCOUNT_API = 'http://127.0.0.1:3000/account'; // URL to web api
+  private ACCOUNT_API = `${environment.api}/account`; // URL to web api
 
   constructor(
     private http: HttpClient,
@@ -69,7 +70,6 @@ export class AccountService {
       // Server-side errors
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
     return throwError(errorMessage);
   }
 

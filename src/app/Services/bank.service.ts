@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { BankDTO } from './DTO/bank.dto';
 import { MessageService } from './message.service';
 
@@ -13,7 +14,7 @@ import { MessageService } from './message.service';
   providedIn: 'root',
 })
 export class BankService {
-  private BANK_API = 'https://bast.dev/api/banks.php'; // URL to web api
+  private BANK_API = `${environment.bankApi}/banks.php`; // URL to web api
 
   constructor(
     private http: HttpClient,
@@ -39,7 +40,6 @@ export class BankService {
       // Server-side errors
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
     return throwError(errorMessage);
   }
 

@@ -4,9 +4,9 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { AccountDTO } from './DTO/account.dto';
 import { TransactionDTO } from './DTO/transaction.dto';
 import { MessageService } from './message.service';
 
@@ -14,7 +14,7 @@ import { MessageService } from './message.service';
   providedIn: 'root',
 })
 export class TransactionService {
-  private TRANSACTION_API = 'http://127.0.0.1:3000/transaction'; // URL to web api
+  private TRANSACTION_API = `${environment.api}/transaction`; // URL to web api
 
   constructor(
     private http: HttpClient,
@@ -64,7 +64,6 @@ export class TransactionService {
       // Server-side errors
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
     return throwError(errorMessage);
   }
 
